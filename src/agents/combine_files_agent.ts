@@ -7,10 +7,10 @@ import { PodcastScript } from "../type";
 const combineFilesAgent: AgentFunction<
   null,
   string,
-  { script: PodcastScript }
+  { script: PodcastScript; combinedFileName: string }
 > = async ({ namedInputs }) => {
-  const { script } = namedInputs;
-  const outputFile = path.resolve("./output/" + script.filename + ".mp3");
+  const { script, combinedFileName } = namedInputs;
+  const outputFile = path.resolve(combinedFileName);
   const silentPath = path.resolve("./music/silent300.mp3");
   const silentLastPath = path.resolve("./music/silent800.mp3");
   const command = ffmpeg();
@@ -47,7 +47,10 @@ const combineFilesAgent: AgentFunction<
   const outputScript = path.resolve("./output/" + script.filename + ".json");
   fs.writeFileSync(outputScript, JSON.stringify(script, null, 2));
 
-  return outputFile;
+  return {
+    fileName: outputFile,
+    script,
+  };
 };
 
 const combineFilesAgentInfo: AgentFunctionInfo = {

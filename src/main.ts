@@ -75,7 +75,11 @@ const graph_data: GraphData = {
     },
     combineFiles: {
       agent: "combineFilesAgent",
-      inputs: { map: ":map", script: ":script" },
+      inputs: {
+        map: ":map",
+        script: ":script",
+        combinedFileName: "./output/${:script.filename}.mp3",
+      },
       isResult: true,
     },
     addBGM: {
@@ -84,7 +88,7 @@ const graph_data: GraphData = {
         musicFileName: process.env.PATH_BGM ?? "./music/StarsBeyondEx.mp3",
       },
       inputs: {
-        voiceFile: ":combineFiles",
+        voiceFile: ":combineFiles.fileName",
         outFileName: "./output/${:script.filename}_bgm.mp3",
         script: ":script",
       },
